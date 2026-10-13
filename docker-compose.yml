@@ -1,0 +1,41 @@
+services:
+  app:
+    build: ./app
+    container_name: app-node
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      ALUNO: "Victor Laumann Vieira"
+
+    depends_on:
+      - mysql
+
+    networks:
+      - rede-so
+
+    mem_limit: 128m
+
+  mysql:
+    image: mysql:8
+
+    container_name: mysql-so
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Defina MYSQL_ROOT_PASSWORD no arquivo .env}
+      MYSQL_DATABASE: empresa
+
+    volumes:
+      - dados_mysql:/var/lib/mysql
+
+    networks:
+      - rede-so
+
+networks:
+  rede-so:
+
+volumes:
+  dados_mysql:
